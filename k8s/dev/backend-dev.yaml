@@ -1,0 +1,30 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: firebase-sync-backend-dev
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: firebase-sync
+      labels:
+        app: firebase-sync
+        role: backend
+        env: dev
+    spec:
+      containers:
+        - name: firebase-sync
+          image: DOCKER_IMAGE
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              value: "https://inception-65767.firebaseio.com"
+          volumeMounts:
+            - name: images-store
+              mountPath: /app/downloads
+      volumes:
+        - name: images-store
+          persistentVolumeClaim:
+            claimName: shared-images-store
