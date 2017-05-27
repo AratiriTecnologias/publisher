@@ -27,7 +27,7 @@ spec:
             - name: images-store
               mountPath: /app/downloads
             - name: admin-service-account
-            mountPath: /admin-service-account
+              mountPath: /admin-service-account
       volumes:
         - name: images-store
           persistentVolumeClaim:
