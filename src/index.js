@@ -49,7 +49,7 @@ app.post('/publish', function (req, res) {
   logger.debug(req.params);
   const ref = db.ref(path);
   switch (method) {
-    case "set": 
+    case "set": {
       const response = db.set(data);
       logger.debug(response);
       break;
