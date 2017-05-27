@@ -21,10 +21,17 @@ spec:
           env:
             - name: DATABASE_URL
               value: "https://inception-65767.firebaseio.com"
+            - name: ADMIN_SERVICE_ACCOUNT
+              value: "/admin-service-account/inception-65767-firebase-adminsdk-ntlor-e096246512.json"
           volumeMounts:
             - name: images-store
               mountPath: /app/downloads
+            - name: admin-service-account
+            mountPath: /admin-service-account
       volumes:
         - name: images-store
           persistentVolumeClaim:
             claimName: shared-images-store
+        - name: admin-service-account
+          secret:
+            secretName: pwned-admin-service-account
