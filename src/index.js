@@ -77,9 +77,6 @@ app.post('/publish', function (req, res) {
       break;
     }
   }
-  res.json({
-    "published": ":)"
-  });
 });
 
 app.post('/upload', function (req, res) {
