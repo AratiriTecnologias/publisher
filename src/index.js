@@ -64,6 +64,18 @@ app.post('/publish', function (req, res) {
       });
       break;
     }
+    case "update": {
+      ref.update(data).then(snapshot => {
+        logger.debug(snapshot.path);
+        logger.debug(snapshot.key);
+        res.json({
+          "published": `${path}/${snapshot.key}`
+        });
+      }).catch(err => {
+        logger.debug(err);
+      });
+      break;
+    }
   }
   res.json({
     "published": ":)"
