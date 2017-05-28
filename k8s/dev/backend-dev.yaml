@@ -23,6 +23,8 @@ spec:
               value: "inception-65767"
             - name: DATABASE_URL
               value: "https://inception-65767.firebaseio.com"
+            - name: STORAGE_BUCKET
+              value: "inception-65767.appspot.com"
             - name: ADMIN_SERVICE_ACCOUNT
               value: "/admin-service-account/inception-65767-firebase-adminsdk-ntlor-e096246512.json"
             - name: SERVICE_ACCOUNT
