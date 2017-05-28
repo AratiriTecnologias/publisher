@@ -36,8 +36,8 @@ const bucket = storage.bucket(process.env.STORAGE_BUCKET);
 app.post('/publish', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
-  const { path, method, data } = req.params;
-  logger.debug(req.params);
+  const { path, method, data } = req.body;
+  logger.debug(req.body);
   const ref = db.ref(path);
   switch (method) {
     case "set": {
@@ -65,7 +65,7 @@ app.post('/publish', function (req, res) {
 app.post('/upload', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
-  const { filename } = req.params;
+  const { filename } = req.body;
 
   const fileLocation = `${process.env.DOWNLOADS_LOCATION}/${filename}`;
 
