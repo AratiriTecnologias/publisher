@@ -96,8 +96,7 @@ app.post('/upload', function (req, res) {
       logger.debug(`ERROR on upload file to google cloud`);
       logger.debug(err);
 
-      res.status(500);
-      res.json({"message": "file not uploaded", "error": err});
+      res.status(500).json({"message": "file not uploaded", "error": err});
     }
 
     file.makePublic(function (err) {
@@ -105,8 +104,7 @@ app.post('/upload', function (req, res) {
         logger.debug(`error: ${JSON.stringify(err)}`);
         logger.debug(err);
 
-        res.status(500);
-        res.json({"message": "is not public", "error": err});
+        res.status(500).json({"message": "is not public", "error": err});
       }
 
       const {mediaLink} = file.metadata;
