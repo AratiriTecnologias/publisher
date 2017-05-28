@@ -106,7 +106,7 @@ app.post('/upload', function (req, res) {
         logger.debug(snapshot.path);
         logger.debug(snapshot.key);
         res.json({
-          published: `${path}/${snapshot.key}`,
+          published: `/images/${snapshot.key}`,
           key: snapshot.key,
           mediaLink: mediaLink
         });
