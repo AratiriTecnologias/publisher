@@ -41,7 +41,7 @@ app.post('/publish', function (req, res) {
   const ref = db.ref(path);
   switch (method) {
     case "set": {
-      const response = db.set(data).then(snapshot => {
+      const response = ref.set(data).then(snapshot => {
         logger.debug(snapshot);
       }).catch(err => {
         logger.debug(err);
@@ -49,7 +49,7 @@ app.post('/publish', function (req, res) {
       break;
     }
     case "push": {
-      const response = db.push(data).then(snapshot => {
+      const response = ref.push(data).then(snapshot => {
         logger.debug(snapshot);
       }).catch(err => {
         logger.debug(err);
