@@ -65,6 +65,7 @@ app.post('/publish', function (req, res) {
 app.post('/upload', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
+  logger.debug(req.body);
   const { filename } = req.body;
 
   const fileLocation = `${process.env.DOWNLOADS_LOCATION}/${filename}`;
