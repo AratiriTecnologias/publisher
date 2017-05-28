@@ -41,16 +41,24 @@ app.post('/publish', function (req, res) {
   const ref = db.ref(path);
   switch (method) {
     case "set": {
-      const response = ref.set(data).then(snapshot => {
+      ref.set(data).then(snapshot => {
         logger.debug(snapshot.path);
+        logger.debug(snapshot.key);
+        res.json({
+          "published": `${path}/${snapshot.key}`
+        });
       }).catch(err => {
         logger.debug(err);
       });
       break;
     }
     case "push": {
-      const response = ref.push(data).then(snapshot => {
+      ref.push(data).then(snapshot => {
         logger.debug(snapshot.path);
+        logger.debug(snapshot.key);
+        res.json({
+          "published": `${path}/${snapshot.key}`
+        });
       }).catch(err => {
         logger.debug(err);
       });
@@ -90,8 +98,20 @@ app.post('/upload', function (req, res) {
       }
 
       const {mediaLink} = file.metadata;
-      res.json({
+      const data = {
         mediaLink: mediaLink
+      }
+      const ref = db.ref("/images/");
+      ref.push(data).then(snapshot => {
+        logger.debug(snapshot.path);
+        logger.debug(snapshot.key);
+        res.json({
+          published: `${path}/${snapshot.key}`,
+          key: snapshot.key,
+          mediaLink: mediaLink
+        });
+      }).catch(err => {
+        logger.debug(err);
       });
     });
 
