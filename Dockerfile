@@ -1,4 +1,4 @@
-FROM node:6.10-alpine
+FROM node:6.9.5-slim
 
 RUN mkdir -p /app/downloads
 ADD package.json docker-entrypoint.sh /app/
