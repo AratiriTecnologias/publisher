@@ -24,23 +24,14 @@ admin.initializeApp({
 
 const db = admin.database();
 
-const sendResponse = (res) => {
-  return (data) => {
-    // res.sendStatus(200);
-    logger.debug(`sendResponse: ${JSON.stringify(data)}`);
-    res.json(data);
-  }
-}
+var gcloud = require('google-cloud')({
+  projectId: `${process.env.GCLOUD_PROJECT_ID}`,
+  // Specify a path to a keyfile.
+  keyFilename: `${process.env.SERVICE_ACCOUNT}`
+});
+var storage = gcloud.storage();
 
-const sendError = (res) => {
-  return (error) => {
-    res.status(500);
-    logger.debug(`sendError: ${JSON.stringify(error)}`);
-    res.json({
-      error: error
-    });
-  }
-}
+const bucket = storage.bucket(process.env.STORAGE_BUCKET);
 
 app.post('/publish', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -50,18 +41,59 @@ app.post('/publish', function (req, res) {
   const ref = db.ref(path);
   switch (method) {
     case "set": {
-      const response = db.set(data);
-      logger.debug(response);
+      const response = db.set(data).then(snapshot => {
+        logger.debug(snapshot);
+      }).catch(err => {
+        logger.debug(err);
+      });
       break;
     }
     case "push": {
-      const response = db.push(data);
-      logger.debug(response);
+      const response = db.push(data).then(snapshot => {
+        logger.debug(snapshot);
+      }).catch(err => {
+        logger.debug(err);
+      });
       break;
     }
   }
   res.json({
     "published": ":)"
+  });
+});
+
+app.post('/upload', function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
+  const { filename } = req.params;
+
+  const fileLocation = `${process.env.DOWNLOADS_LOCATION}/${filename}`;
+
+  bucket.upload(fileLocation, function (err, file) {
+    if (err) {
+      logger.debug(`error: ${JSON.stringify(err)}`);
+      logger.debug(`ERROR on upload file to google cloud`);
+      logger.debug(err);
+
+      res.status(500);
+      res.json({"message": "file not uploaded", "error": err});
+    }
+
+    file.makePublic(function (err) {
+      if (err) {
+        logger.debug(`error: ${JSON.stringify(err)}`);
+        logger.debug(err);
+
+        res.status(500);
+        res.json({"message": "is not public", "error": err});
+      }
+
+      const {mediaLink} = file.metadata;
+      res.json({
+        mediaLink: mediaLink
+      });
+    });
+
   });
 });
 

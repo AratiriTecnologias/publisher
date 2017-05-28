@@ -19,9 +19,13 @@ spec:
             - name: http
               containerPort: 8080
           env:
+            - name: GCLOUD_PROJECT_ID
+              value: "inception-65767"
             - name: DATABASE_URL
               value: "https://inception-65767.firebaseio.com"
             - name: ADMIN_SERVICE_ACCOUNT
+              value: "/admin-service-account/inception-65767-firebase-adminsdk-ntlor-e096246512.json"
+            - name: SERVICE_ACCOUNT
               value: "/admin-service-account/inception-65767-firebase-adminsdk-ntlor-e096246512.json"
           volumeMounts:
             - name: images-store
